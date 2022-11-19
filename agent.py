@@ -58,4 +58,5 @@ class RandomAgent(Agent):
         super().__init__()
     
     def evaluate(self, board):
-        return random.choice(list(board.get_legal_moves()))
+        moves = list(board.get_legal_moves())
+        return random.choice(moves)

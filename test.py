@@ -1,13 +1,7 @@
 import numpy as np
 from agent import MiniMaxAgent, RandomAgent
 from tictactoe import Board2D, Board3D, TicTacToe
-from eval import random_eval
-
-agent1 = MiniMaxAgent(random_eval, depth=2)
-agent2 = MiniMaxAgent(random_eval, depth=2)
-
-board = Board2D(board_size=3)
-t = TicTacToe(board, agent1, agent2)
+from eval_functions import random_eval
 
 agent1 = RandomAgent()
 agent2 = RandomAgent()

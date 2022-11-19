@@ -118,7 +118,7 @@ class TicTacToe:
                 print(f'========= move {n_moves} =========')
                 print(self.board_wrapper)
                 print('=========        =========')
-            if self.board_wrapper.current_player == -1:
+            if self.board_wrapper.current_player == 0:
                 best_move = self.agent1.evaluate(self.board_wrapper)
             else:
                 best_move = self.agent2.evaluate(self.board_wrapper)
