@@ -27,3 +27,20 @@ def neighbors_eval(node):
                 score+=1
                 
     return score
+
+def dist(loc1, loc2):
+    return np.square(loc1 - loc2).sum()
+
+def dist_from_center(loc, board):
+    center = np.asarray([board.shape[0]//2, board.shape[1]//2])
+    return dist(np.asarray(loc), center)
+
+def my_eval_function(node):
+    board = node.state
+    score = 0
+    player = board.pieces[(board.current_player + 1)%2] # this *backtracks* to the previous board player 
+    # i.e. gets the player we're evaluating the perspective of
+    my_pieces = zip(*np.where(board.board == player))
+    for loc in my_pieces:
+        score -= dist_from_center(loc, board.board)
+    return score + np.random.normal()
