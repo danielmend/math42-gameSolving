@@ -4,7 +4,7 @@ from utils import Node, minimax
 import random 
 
 class Agent:
-    def __init__(self):
+    def __init__(self, name):
         pass
     
     def evaluate(self, board):
@@ -41,8 +41,9 @@ class MiniMaxEvaluator:
         return best_move
 
 class MiniMaxAgent(Agent):
-    def __init__(self, eval_fn, depth):
-        super().__init__()
+    def __init__(self, eval_fn, depth, name='MiniMaxAgent'):
+        super().__init__(name)
+        self.name = name
         self.eval_fn = eval_fn
         self.evaluator = MiniMaxEvaluator(eval_fn, depth)
         
@@ -54,8 +55,9 @@ class MiniMaxAgent(Agent):
         return self.evaluator.evaluate(node)
 
 class RandomAgent(Agent):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name='RandomAgent'):
+        super().__init__(name)
+        self.name = name
     
     def evaluate(self, board):
         moves = list(board.get_legal_moves())

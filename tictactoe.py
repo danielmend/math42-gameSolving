@@ -109,7 +109,11 @@ class TicTacToe:
         self.board_wrapper = board
         self.agent1 = agent1
         self.agent2 = agent2
+        self.agent_names = [agent1.name, agent2.name]
         
+    def name_result(self, res):
+        return self.agent_names[0] if res == -1 else self.agent_names[1]
+
     def sim_game(self, display=True):
         self.board_wrapper.reset()
         n_moves = 0
@@ -128,4 +132,5 @@ class TicTacToe:
                 print(f'========= move {n_moves} =========')
                 print(self.board_wrapper)
                 print('=========        =========')
-        return self.board_wrapper.get_winner() if list(self.board_wrapper.get_legal_moves()) else 'draw'
+        
+        return self.name_result(self.board_wrapper.get_winner()) if list(self.board_wrapper.get_legal_moves()) else 'draw'
