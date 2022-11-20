@@ -32,12 +32,13 @@ class MiniMaxEvaluator:
                 parent=self,
                 move=move,
             )
-            value = minimax(child_node, self.depth, False, self.eval_fn)
+            player = (child_node.state.current_player+1)%2
+            value = minimax(child_node, self.depth, False, self.eval_fn, player)
             
             if value > best_eval:
                 best_move = move
                 best_eval = value
-                
+           
         return best_move
 
 class MiniMaxAgent(Agent):

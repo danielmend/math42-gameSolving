@@ -25,18 +25,19 @@ class Node:
         self.children = children
         return children
 
-def minimax(node, depth, maximizing_player, eval_fn):
+def minimax(node, depth, maximizing_player, eval_fn, player):
     if depth == 0 or node.state.get_winner() != 0 or not list(node.state.get_legal_moves()):
-        return eval_fn(node)
+        piece = node.state.pieces[player]
+        return eval_fn(node, piece)
+
     if maximizing_player:
         value = -np.inf
         for child in node.get_children():
-            value = max(value, minimax(child, depth-1, False, eval_fn))
-
+            value = max(value, minimax(child, depth-1, False, eval_fn, player))
     else:
         value = np.inf
         for child in node.get_children():
-            value = min(value, minimax(child, depth-1, True, eval_fn))
-
+            value = min(value, minimax(child, depth-1, True, eval_fn, player))
+    
     return value
 

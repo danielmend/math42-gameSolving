@@ -8,10 +8,9 @@ def are_neighbors(loc1, loc2):
     diff = np.asarray(loc1) - np.asarray(loc2)
     return np.square(diff).sum() <= np.ones(shape=(dim,)).sum()
 
-def neighbors_eval(node):
+def neighbors_eval(node, player):
     board = node.state
     score = 0
-    player = board.pieces[(board.current_player + 1)%2]
     other_player = -player
     
     if board.get_winner() == player:
@@ -35,10 +34,9 @@ def dist_from_center(loc, board):
     center = np.asarray([board.shape[0]//2, board.shape[1]//2])
     return dist(np.asarray(loc), center)
 
-def my_eval_function(node):
+def my_eval_function(node, player):
     board = node.state
     score = 0
-    player = board.pieces[(board.current_player + 1)%2] # this *backtracks* to the previous board player 
     # i.e. gets the player we're evaluating the perspective of
     my_pieces = zip(*np.where(board.board == player))
     for loc in my_pieces:

@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 
 class Board2D:
     def __init__(self, **kwargs):
@@ -106,6 +107,7 @@ class Board3D:
 
 class TicTacToe:
     def __init__(self, board, agent1, agent2):
+        self.board_states = []
         self.board_wrapper = board
         self.agent1 = agent1
         self.agent2 = agent2
@@ -114,10 +116,13 @@ class TicTacToe:
     def name_result(self, res):
         return self.agent_names[0] if res == -1 else self.agent_names[1]
 
-    def sim_game(self, display=True):
+    def sim_game(self, display=False, return_boards=False):
         self.board_wrapper.reset()
         n_moves = 0
+        boards = []
         while self.board_wrapper.get_winner() == 0 and list(self.board_wrapper.get_legal_moves()):
+            if return_boards:
+                boards.append(self.board_wrapper.board.copy())
             if display:
                 print(f'========= move {n_moves} =========')
                 print(self.board_wrapper)
@@ -132,5 +137,8 @@ class TicTacToe:
                 print(f'========= move {n_moves} =========')
                 print(self.board_wrapper)
                 print('=========        =========')
-        
-        return self.name_result(self.board_wrapper.get_winner()) if list(self.board_wrapper.get_legal_moves()) else 'draw'
+
+        result = self.name_result(self.board_wrapper.get_winner()) if list(self.board_wrapper.get_legal_moves()) else 'draw'
+        if return_boards:
+            return result, boards
+        return result
