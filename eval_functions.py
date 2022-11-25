@@ -42,3 +42,13 @@ def my_eval_function(node, player):
     for loc in my_pieces:
         score -= dist_from_center(loc, board.board)
     return score + np.random.normal()
+
+def simple_eval(node, player):
+    board = node.state
+
+    if board.get_winner() == player:
+        return 100
+    elif board.get_winner() == -player:
+        return -100
+    else:
+        return 0
