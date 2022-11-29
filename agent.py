@@ -2,6 +2,8 @@ import numpy as np
 import copy
 from utils import Node, minimax
 import random 
+from collections import defaultdict
+from utils import MonteCarloTreeSearchNode
 
 class Agent:
     def __init__(self, name):
@@ -63,3 +65,13 @@ class RandomAgent(Agent):
     def evaluate(self, board):
         moves = list(board.get_legal_moves())
         return random.choice(moves)
+    
+class MonteCarloAgent(Agent):
+    def __init__(self, name='MctsAgent', num_sims=100):
+        super().__init__(name)
+        self.name = name
+        self.num_sims = num_sims
+    
+    def evaluate(self, board):
+        player = board.current_player
+        return MonteCarloTreeSearchNode(board, player, num_sims=self.num_sims).best_action().parent_action
