@@ -44,6 +44,28 @@ def minimax(node, depth, maximizing_player, eval_fn, player):
     
     return value
 
+def minimax_with_pruning(node, depth, maximizing_player, alpha, beta, eval_fn, player):
+    if depth == 0 or node.state.get_winner() != 0 or not list(node.state.get_legal_moves()):
+        piece = node.state.pieces[player]
+        return eval_fn(node, piece)
+
+    if maximizing_player:
+        value = -np.inf
+        for child in node.get_children():
+            value = max(value, minimax_with_pruning(child, depth-1, False, alpha, beta, eval_fn, player))
+            alpha = max(alpha, value)
+            if beta <= alpha:
+                break
+    else:
+        value = np.inf
+        for child in node.get_children():
+            value = min(value, minimax_with_pruning(child, depth-1, True, alpha, beta, eval_fn, player))
+            beta = min(beta, value)
+            if beta <= alpha:
+                break
+    
+    return value
+
 class MonteCarloTreeSearchNode():
     def __init__(self, state, player, parent=None, parent_action=None, num_sims=100):
         self.state = state
