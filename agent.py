@@ -1,6 +1,6 @@
 import numpy as np
 import copy
-from utils import Node, minimax
+from utils import Node, minimax, minimax_with_pruning
 import random 
 from collections import defaultdict
 from utils import MonteCarloTreeSearchNode
@@ -16,9 +16,10 @@ class Agent:
         pass
 
 class MiniMaxEvaluator:
-    def __init__(self, eval_fn, depth):
+    def __init__(self, eval_fn, depth, using_ab_pruning = False):
         self.eval_fn = eval_fn
         self.depth = depth
+        self.using_ab_pruning = using_ab_pruning
         
     def evaluate(self, node):
         '''
@@ -35,7 +36,12 @@ class MiniMaxEvaluator:
                 move=move,
             )
             player = (child_node.state.current_player+1)%2
-            value = minimax(child_node, self.depth, False, self.eval_fn, player)
+            
+            if self.using_ab_pruning:
+                value = minimax_with_pruning(child_node, self.depth, False, -np.inf, np.inf, self.eval_fn, player) 
+            else:
+                value = minimax(child_node, self.depth, False, self.eval_fn, player)
+            
             
             if value > best_eval:
                 best_move = move
@@ -44,11 +50,11 @@ class MiniMaxEvaluator:
         return best_move
 
 class MiniMaxAgent(Agent):
-    def __init__(self, eval_fn, depth, name='MiniMaxAgent'):
+    def __init__(self, eval_fn, depth, name='MiniMaxAgent', using_ab_pruning = False):
         super().__init__(name)
         self.name = name
         self.eval_fn = eval_fn
-        self.evaluator = MiniMaxEvaluator(eval_fn, depth)
+        self.evaluator = MiniMaxEvaluator(eval_fn, depth, using_ab_pruning = using_ab_pruning)
         
     def evaluate(self, board):
         '''
